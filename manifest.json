@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Excel Online Mac Key Guard",
+  "version": "1.0.0",
+  "description": "Excel Online で Mac の英数キーによる誤入力を防ぐ拡張機能",
+  "permissions": ["activeTab"],
+  "host_permissions": ["https://*.officeapps.live.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://*.officeapps.live.com/*"],
+      "js": ["content.js"],
+      "all_frames": true,
+      "run_at": "document_start"
+    }
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
