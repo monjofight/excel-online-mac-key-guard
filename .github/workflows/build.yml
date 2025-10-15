@@ -1,0 +1,45 @@
+name: Build Extension
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create extension zip
+        run: |
+          zip -r excel-online-mac-key-guard.zip \
+            manifest.json \
+            content.js \
+            icon16.png \
+            icon48.png \
+            icon128.png \
+            -x "*.git*" -x "*.github*" -x "README.md"
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: excel-online-mac-key-guard
+          path: excel-online-mac-key-guard.zip
+          retention-days: 90
+      
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./excel-online-mac-key-guard.zip
+          asset_name: excel-online-mac-key-guard.zip
+          asset_content_type: application/zip
